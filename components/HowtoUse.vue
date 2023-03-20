@@ -12,7 +12,7 @@
           <div class="collapse-content focus:pointer-events-none">
             <div class="prose max-w-fit">
               <p>
-                Obtain your certificate via CLI, API or filling out the web form. You just need to do this once.
+                Obtain your certificate via CLI, <a :href="$config.apiURL" target="_blank">API</a> or filling out the web form. You just need to do this once.
                 After a minute your certificate is issued and browsable under the CA's you choosed.
               </p>
             </div>
@@ -34,8 +34,8 @@
               </p>
             </div>
             <div class="mockup-code mt-2">
-              <pre class="px-5" data-prefix="[~]$"><code>wget -q -O- https://dns3l/../cert.pem > cert.pem</code></pre>
-              <pre class="px-5" data-prefix="[~]$"><code>wget -q -O- https://dns3l/../key.pem > key.pem</code></pre>
+              <pre class="px-5" data-prefix="[~]$"><code>curl -s {{$config.apiURL}}/ca/{caId}/crt/bar.foo.company.tld/pem/fullchain > fullchain.pem</code></pre>
+              <pre class="px-5" data-prefix="[~]$"><code>curl -s {{$config.apiURL}}/ca/{caId}/crt/bar.foo.company.tld/pem/key > key.pem</code></pre>
             </div>
           </div>
         </div>
@@ -51,20 +51,20 @@
               </p>
             </div>
             <div class="mockup-code mt-2">
-              <pre class="px-5" data-prefix="[~]$"><code class="text-success"># check your actual DNS3L cert</code></pre>
-              <pre class="px-5" data-prefix="[~]$"><code>echo | openssl s_client -servername foo.company.tld \
-        -connect foo.example.com:443 2>/dev/null |\
+              <pre class="px-5" data-prefix="[~]$"><code class="text-success"># check your actual cert</code></pre>
+              <pre class="px-5" data-prefix="[~]$"><code>echo | openssl s_client -servername bar.foo.company.tld \
+        -connect bar.foo.company.tld:443 2>/dev/null |\
         openssl x509 -noout -dates | grep ^notAfter
 </code>
 </pre>
               <pre class="px-5" data-prefix="[~]$"><code class="text-success"># poll DNS3L regularly for a newer one</code></pre>
-              <pre class="px-5" data-prefix="[~]$"><code>wget -q -O- https://dns3l/../cert.pem |\
+              <pre class="px-5" data-prefix="[~]$"><code>curl -s {{$config.apiURL}}/ca/{caId}/crt/bar.foo.company.tld/pem/crt |\
         openssl x509 -noout -dates | grep ^notAfter
 </code>
 </pre>
               <pre class="px-5" data-prefix="[~]$"><code class="text-success"># deploy a renewed one</code></pre>
-              <pre class="px-5" data-prefix="[~]$"><code>wget -q -O- https://dns3l/../cert.pem > cert.pem</code></pre>
-              <pre class="px-5" data-prefix="[~]$"><code>wget -q -O- https://dns3l/../key.pem > key.pem</code></pre>
+              <pre class="px-5" data-prefix="[~]$"><code>curl -s {{$config.apiURL}}/ca/{caId}/crt/bar.foo.company.tld/pem/fullchain > fullchain.pem</code></pre>
+              <pre class="px-5" data-prefix="[~]$"><code>curl -s {{$config.apiURL}}/ca/{caId}/crt/bar.foo.company.tld/pem/key > key.pem</code></pre>
             </div>
           </div>
         </div>
