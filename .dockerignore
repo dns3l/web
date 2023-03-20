@@ -1,0 +1,14 @@
+.env
+.dockerignore
+.nuxt
+.yarn
+.git*
+.cache
+.eslint*
+.editorconfig
+Dockerfile
+README.md
+node_modules
+npm-debug*
+dist
+yarn.lock
