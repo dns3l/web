@@ -1,7 +1,7 @@
 FROM node:16-alpine
 
 LABEL org.opencontainers.image.title="dns3l web"
-LABEL org.opencontainers.image.description="An SPA web client DNS3L"
+LABEL org.opencontainers.image.description="A SPA web client for DNS3L"
 LABEL org.opencontainers.image.version=0.0.0
 
 ENV VERSION=0.0.0
