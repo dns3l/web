@@ -8,7 +8,7 @@
     <rapi-doc
       id="apiviewer"
       class="flex-1"
-      spec-url="https://raw.githubusercontent.com/iaean/dns3l/master/openapi.yaml"
+      spec-url="https://raw.githubusercontent.com/dns3l/dns3l/master/openapi.yaml"
       show-header="false"
       render-style="read"
       theme="light"
