@@ -12,9 +12,9 @@
         </p>
         <p>
           For ACME DNS-01 validation we delegate the <strong><em>public part</em></strong>
-          of our <code>*.company.tld</code> domains to an public DNS provider like
+          of our <code>*.company.tld</code> domains to a public DNS provider like
           <a href="https://docs.otc.t-systems.com/dns/index.html">Open Telekom Cloud (OTC) DNS</a>
-          service.
+          service for instance.
         </p>
       </div>
       <div class="mockup-code">
@@ -24,7 +24,8 @@ ns2.open-telekom-cloud.com.</code></pre>
       </div>
       <div class="prose max-w-fit">
         <p>
-          Because its authoritative with API support, we can automate the ACME validation.
+          Because its authoritative with API support, we can automate the ACME DNS-01 validation
+          for public CA.
         </p>
         <p>
           The X.509 <code>CommonName</code> of your certificate can be internally and externally the same.
