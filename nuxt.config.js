@@ -42,7 +42,7 @@ export default {
   ],
   // https://nuxtjs.org/tutorials/moving-from-nuxtjs-dotenv-to-runtime-config/
   publicRuntimeConfig: {
-    appVersion: pkg.version,
+    appVersion: process.env.VERSION || pkg.version,
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     apiURL:  process.env.API_URL  || process.env.BASE_URL + '/api',
     mockURL: process.env.MOCK_URL || process.env.BASE_URL + '/mock',
