@@ -124,13 +124,13 @@
           :loading="loading"
           @claim-cert="sendForm()"
         />
-        <button class="flex-none btn btn-primary mt-2 normal-case text-slate-50 text-l" @click="resetForm()">
+        <button :disabled="loading" class="flex-none btn btn-primary mt-2 normal-case text-slate-50 text-l" @click="resetForm()">
           Reset
         </button>
       </div>
 
       <InfoMessage v-if="loading" :title="'Processing your request. Please wait!'" :spinner="true" class="mt-2">
-        You will be redirected to chossen CA...
+        You will be redirected to chosen CA...
       </InfoMessage>
       <InfoMessage
         v-if="message.show"
@@ -148,7 +148,6 @@
 
 <!-- nextTODO:
   Disable CA | RTZ based on Selection
-  Some more syntax checking for Prefix, SAN, IP
 -->
 
 <script>
@@ -211,23 +210,41 @@ export default {
     focusInput () { // eslint-disable-line
       this.$refs.prefix.focus({ preventScroll: true })
     },
+    checkPrefix: function (p) { // eslint-disable-line
+      // RFC 1123, https://stackoverflow.com/questions/106179/regular-expression-to-match-dns-hostname-or-ip-address
+      const hostnameRegex = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
+      return p ? p.match(hostnameRegex) != null : false // mandatory
+    },
+    checkIP: function (i) { // eslint-disable-line
+      const ipAddressRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
+      return i ? i.match(ipAddressRegex) != null : (!this.autodns) // AutoDNS mandatory
+    },
+    checkSAN: function (s) { // eslint-disable-line
+      if (!s) { return true } // optional
+      const sans = s.split(/\s?,\s?/)
+      // RFC 1123 with optional *. prefix
+      const hostnameRegex = /^(\*\.)?(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/
+      for (const p of sans) {
+        if (p.match(hostnameRegex) == null) { return false }
+      }
+      return true
+    },
     checkForm: function () { // eslint-disable-line
       let failures = 0
       for (const i in this.errors) { this.errors[i] = false }
       if (!this.ca) { failures++; this.errors.ca = true }
       if (!this.rtz) { failures++; this.errors.rtz = true }
       if (!this.prefix) { failures++; this.errors.prefix = true }
-      // if (!this.checkPrefix(prefix)) { failures++; this.errors.prefix = true }
-      // if (!this.checkSAN(san)) { failures++; this.errors.san = true }
-      // if (!this.checkIP(ip)) { failures++; this.errors.ip = true }
+      if (!this.checkPrefix(this.prefix)) { failures++; this.errors.prefix = true }
+      if (!this.checkSAN(this.san)) { failures++; this.errors.san = true }
+      if (!this.checkIP(this.ip)) { failures++; this.errors.ip = true }
       return !failures
     },
     async sendForm () { // eslint-disable-line
-      const sep = /[\s,]+/
       const body = {
-        name: this.prefix + this.rtz,
+        name: this.prefix + '.' + this.rtz,
         wildcard: this.wildcard,
-        san: this.san ? this.san.split(sep).map(s => s + this.rtz) : null,
+        san: this.san ? this.san.split(/\s?,\s?/).map(s => s + '.' + this.rtz) : null,
         autodns: this.autodns && this.ip ? { ipv4: this.ip } : null
       }
       if (this.checkForm()) {
