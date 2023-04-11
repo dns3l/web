@@ -21,15 +21,21 @@
             <tbody>
               <tr v-for="(c, i) in crts" :key="c.name" :class="{ active: ! (c.valid && isValid(c.validTo)) }" class="hover">
                 <td>
-                  <span class="whitespace-nowrap font-bold">
-                    {{ c.name }}
+                  <a v-if="caIsPublic" target="_blank" :href="'https://crt.sh/?CN=' + nameTrimDot(c.name) + '&match=LIKE'" class="whitespace-nowrap font-bold">
+                    {{ nameTrimDot(c.name) }}
+                  </a>
+                  <span v-else class="whitespace-nowrap font-bold">
+                    {{ nameTrimDot(c.name) }}
                   </span>
                   <span class="whitespace-normal">
                     <span v-if="c.wildcard" class="badge badge-sm badge-info text-slate-50">wildcard</span>
                     <span v-if="c.renewCount > 0" class="badge badge-sm">{{ c.renewCount }}</span>
                   </span>
                   <br>
-                  <span class="whitespace-nowrap text-xs font-light">
+                  <a v-if="caIsPublic" target="_blank" :href="'https://crt.sh/?serial=' + serialToHex(c.serial)" class="whitespace-nowrap text-xs font-light">
+                    S/N: {{ c.serial }}
+                  </a>
+                  <span v-else class="whitespace-nowrap text-xs font-light">
                     S/N: {{ c.serial }}
                   </span>
                 </td>
@@ -72,7 +78,7 @@
                       Fullchain
                     </button>
                   </div>
-                  <button class="btn btn-xs btn-ghost">
+                  <a :href="$config.apiURL + '/ca/' + ca + '/crt/' + nameTrimDot(c.name) + '/pem/fullchain'" class="btn btn-xs btn-ghost">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3" viewBox="0 0 457.03 457.03" style="enable-background:new 0 0 457.03457.03;">
                       <g><path
                         d="M421.512,207.074l-85.795,85.767c-47.352,47.38-124.169,47.38-171.529,0c-7.46-7.439-13.296-15.821-18.421-24.465
@@ -88,7 +94,7 @@
                       />
                       </g>
                     </svg>
-                  </button>
+                  </a>
                 </td>
                 <td>
                   <button class="btn btn-xs btn-error text-slate-50 normal-case" @click="deleteModalHandler(i, c.name)">
@@ -198,8 +204,11 @@ export default {
       })
   },
   computed: {
-    caName: function () { // eslint-disable-line
-      return _.findWhere(this.cas, { id: this.ca }).name
+    caById: function () { // eslint-disable-line
+      return _.findWhere(this.cas, { id: this.ca })
+    },
+    caIsPublic: function () { // eslint-disable-line
+      return _.findWhere(this.cas, { id: this.ca }).type === 'public'
     },
     caHelp: function () { // eslint-disable-line
       return this.$renderMarkdown(this.caHelpMarkdown)
@@ -211,8 +220,14 @@ export default {
     }
   },
   methods: {
+    serialToHex: function (s) { // eslint-disable-line
+      return BigInt(s).toString(16)
+    },
+    nameTrimDot: function (n) { // eslint-disable-line
+      return n.replace(/\.?$/, '')
+    },
     deleteModalHandler: function (i, n) { // eslint-disable-line
-      this.crt = n.replace(/\.?$/, '')
+      this.crt = this.nameTrimDot(n)
       this.visible = true
     },
     async deleteCert () { // eslint-disable-line
@@ -225,7 +240,7 @@ export default {
           t.loading = false
           if (r.ok) { // browse CA
             t.visible = false
-            window.$nuxt.context.redirect('/browse/' + this.ca)
+            this.$nuxt.refresh()
           } else {
             t.message.title = 'HTTP API returned an error!'
             r.json()
