@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:20-alpine
 
 LABEL org.opencontainers.image.title="dns3l web"
 LABEL org.opencontainers.image.description="A SPA web client for DNS3L"
