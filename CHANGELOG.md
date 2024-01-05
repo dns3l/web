@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/dns3l/web/compare/v1.0.3...v1.0.4) (2024-01-05)
+
+
+### Bug Fixes
+
+* Enable delete ([#46](https://github.com/dns3l/web/issues/46)) ([c6cd0fc](https://github.com/dns3l/web/commit/c6cd0fc09e206b6b138faa28d6c2e19faae6c8c8))
+
 ## [1.0.3](https://github.com/dns3l/web/compare/v1.0.2...v1.0.3) (2023-04-11)
 
 
