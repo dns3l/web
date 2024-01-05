@@ -113,19 +113,19 @@
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
             <p>
-              This action cannot be undone!<br />
-              <span class="text-xs">But is not implemented, yet. Use API instead.</span>
+              This action cannot be undone!
             </p>
           </div>
         </div>
         <p class="text font-semibold pt-4">
-          Are you sure you want to delete this certificate and key?
+          Are you sure you want to delete this certificate?
         </p>
         <p class="text-lg font-extrabold text-center text-red-600 pt-2">
           {{ crt }}
         </p>
         <p class="text-xs pt-2">
-          Of course you can re-create a certificate using the same name when it is deleted. In which also a new key is re-generated.
+          Of course you can re-create a certificate using the same name when it was deleted.
+          In which also a new key is re-generated. Depending on CA certificate will be revoked before deletion.
         </p>
         <div class="modal-action">
           <button :disabled="(! $auth.loggedIn) || loading" class="btn btn-outline btn-error" @click="deleteCert()">
@@ -154,7 +154,6 @@
 </template>
 
 <!-- nextTODO:
-  Add perma link to fullchain PEM
   PEM Viewer
 -->
 
@@ -234,7 +233,7 @@ export default {
       const t = this // rescue this context
       this.message.show = false
       this.loading = true
-      await fetch(this.$config.mockURL + '/ca/' + this.ca + '/crt/' + this.crt,
+      await fetch(this.$config.apiURL + '/ca/' + this.ca + '/crt/' + this.crt,
         this.$fetchHeader(this.$auth.loggedIn ? this.$auth.strategy.idToken.get() : null, 'DELETE'))
         .then((r) => {
           t.loading = false
