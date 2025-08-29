@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:24.5-alpine
 
 LABEL org.opencontainers.image.title="dns3l web"
 LABEL org.opencontainers.image.description="A SPA web client for DNS3L"
@@ -42,8 +42,8 @@ RUN apk --update upgrade && \
 
 # Install dockerize
 #
-ENV DCKRZ_VERSION="0.17.0"
-RUN _arch=${_arch/amd64/x86_64} && curl -fsSL https://github.com/powerman/dockerize/releases/download/v$DCKRZ_VERSION/dockerize-${_os}-${_arch}${_variant} > /dckrz && \
+ENV DCKRZ_VERSION="0.23.1"
+RUN curl -fsSL https://github.com/powerman/dockerize/releases/download/v$DCKRZ_VERSION/dockerize-v${DCKRZ_VERSION}-${_os}-${_arch}${_variant} > /dckrz && \
     chmod a+x /dckrz
 
 # Set environment variables
