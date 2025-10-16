@@ -8,6 +8,23 @@ The `vscode` container user UID is set to your local UID automatically. If you h
 
 Injecting your host local `.gitconfig` into the container automatically is disabled by default for better segregation.
 
+Create a `.devcontainer/devcontainer.env` file to inject variables into build and runtime context.
+
+```bash
+# HTTP_PROXY=
+# HTTPS_PROXY=
+# NO_PROXY=
+# http_proxy=
+# https_proxy=
+# no_proxy=
+
+# GIT_AUTHOR_NAME=
+# GIT_COMMITTER_NAME=
+
+# GITHUB_TOKEN=
+# GITLAB_TOKEN=
+```
+
 [0]: https://code.visualstudio.com/docs/devcontainers/containers
 [1]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 [2]: https://containers.dev
