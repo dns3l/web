@@ -89,3 +89,8 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# DevContainer
+.devcontainer/*.env
+.devcontainer/.env
+.devcontainer/env
