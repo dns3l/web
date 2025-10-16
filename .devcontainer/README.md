@@ -4,7 +4,7 @@ We are using `docker compose` for better environment injection.
 
  The [`common-utils`][6] feature is applied as it supports Alpine. We installed [`nvm`][3] but are not using it. As there is no Alpine binary package from [Node.js][4], `nvm` always try to compile `node` during install. This is also the reason why we utilize [`node:alpine`][5] as base image from DockerHub instead of the Alpine base image from Microsoft. Today the [node][7] feature doesn't support Alpine unfortunately.
 
-The `vscode` container user UID is set to your local UID automatically. If you have problems with bind mounts check if your local UID exists in the container and are assigned to other users.
+The `vscode` container user UID is set to your local UID automatically. If you have problems with bind mounts check if your local UID exists in the container and is assigned to another user.
 
 Injecting your host local `.gitconfig` into the container automatically is disabled by default for better segregation.
 
