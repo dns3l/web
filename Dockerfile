@@ -2,9 +2,9 @@ FROM node:22-alpine@sha256:dbcedd8aeab47fbc0f4dd4bffa55b7c3c729a707875968d467aaa
 
 LABEL org.opencontainers.image.title="dns3l web"
 LABEL org.opencontainers.image.description="A SPA web client for DNS3L"
-LABEL org.opencontainers.image.version=1.0.4
+LABEL org.opencontainers.image.version=0.0.0-semantically-released
 
-ENV VERSION=1.0.4
+ENV VERSION=0.0.0-semantically-released
 
 # provided via BuildKit
 ARG TARGETPLATFORM
