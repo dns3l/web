@@ -94,3 +94,18 @@ sw.*
 .devcontainer/*.env
 .devcontainer/.env
 .devcontainer/env
+
+# Tests
+/test-results/
+/playwright-report/
+/blob-report/
+.devcontainer/devcontainer.env
+
+# Nuxt build output
+.output
+
+.env
+.env.*
+.nuxt/
+.output/
+node_modules/
